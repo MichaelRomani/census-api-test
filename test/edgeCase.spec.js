@@ -1,7 +1,7 @@
 const expect = require('chai').expect
 const { testGender, testPassword } = require('../index').tests
 
-describe('Test Edge Cases', function () {
+describe('Test Edge Cases / Top Field', function () {
   //Generate random number of users information to test against - Range: 1000 - 2500
   const number = Math.floor(Math.random() * 1500 + 1000)
 
@@ -11,14 +11,14 @@ describe('Test Edge Cases', function () {
 
     testGender(args, ({ status, message }) => {
 
-      //Testing whether or not proper error status / message was returned
+      //Test whether or not proper error status / message was returned
       expect(status).to.equal(400)
       expect(message).to.equal('Bad Request')
       done()
     })
   })
 
-  it('0 users information passed to API - returns empty array', function (done) {
+  it('Empty array passed for "user" field - returns empty array', function (done) {
     this.timeout(10000)
     const args = { number: 0, actionType: 'CountByGender' }
 
@@ -30,7 +30,7 @@ describe('Test Edge Cases', function () {
         expect(Array.isArray(results)).to.equal(true)
 
         //Test: Returned data to ensure length of 0 (no user info passed to API)
-        expect(results).to.have.length(results)
+        expect(results).to.have.length(0)
       }
       else console.log(err)
       done()
@@ -40,30 +40,17 @@ describe('Test Edge Cases', function () {
   it('Top value test: CountPasswordComplexity', function (done) {
     this.timeout(10000)
     let top = Math.floor(Math.random() * number)
-    const args = { number, actionType: 'CountPasswordComplexity', top }
+    const args = { number, actionType: '3', top }
 
-    testPassword(args, (err, { results }) => {
+    testPassword(args, (err, { passwords, results }) => {
       if (!err) {
 
-        //Test: Returned number of results vs 'top' value passed in as argument
-        expect(results).to.have.length(top)
-      }
-      else console.log(err)
-      done()
-    })
-  })
+        //Test: Number of users returned from random.me matches total number requested
+        expect(passwords).to.have.length(number)
 
-  it('Top value test: CountByGender', function (done) {
-    this.timeout(10000)
-    const top = Math.floor(Math.random() * number)
-    const args = { number, actionType: 'CountByGender', top }
-
-    testPassword(args, (err, { results }) => {
-      if (!err) {
-        const totalResults = results.reduce((sum, obj) => sum + obj.value, 0)
-
-        //Test: Returned number of results vs 'top' value passed in as argument
-        expect(totalResults).to.equal(top)
+        const bool = results.length <= top
+        //Test: Number of results returned from census-toy does not exceed 'top' value
+        expect(bool).to.equal(true)
       }
       else console.log(err)
       done()
