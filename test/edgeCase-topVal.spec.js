@@ -49,6 +49,7 @@ describe('Test Edge Cases / Top Field', function () {
         expect(passwords).to.have.length(number)
 
         const bool = results.length <= top
+
         //Test: Number of results returned from census-toy does not exceed 'top' value
         expect(bool).to.equal(true)
       }

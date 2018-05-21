@@ -14,7 +14,6 @@ const testGender = (args, callback) => {
 
       request.post('https://census-toy.nceng.net/prod/toy-census', { actionType, users, top })
         .end((error, { body }) => {
-          if (top) console.log(body, top, '<<<<<<')
           error ? callback(error) :
             callback(null, {
               femaleUsers: users.reduce((sum, obj) => sum + (obj.gender === 'female'), 0),
