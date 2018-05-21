@@ -39,7 +39,7 @@ describe('Test Edge Cases', function () {
 
   it('Top value test: CountPasswordComplexity', function (done) {
     this.timeout(10000)
-    let top = Math.floor(Math.random() * number)
+    let top = Math.floor(Math.random() * 500)
     const args = { number, actionType: 'CountPasswordComplexity', top }
 
     testPassword(args, (err, { results }) => {
@@ -55,7 +55,7 @@ describe('Test Edge Cases', function () {
 
   it('Top value test: CountByGender', function (done) {
     this.timeout(10000)
-    const top = Math.floor(Math.random() * number)
+    const top = Math.floor(Math.random() * 500)
     const args = { number, actionType: 'CountByGender', top }
 
     testPassword(args, (err, { results }) => {
